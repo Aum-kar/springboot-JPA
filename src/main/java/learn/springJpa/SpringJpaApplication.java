@@ -16,35 +16,18 @@ public class SpringJpaApplication {
 		ApplicationContext context = SpringApplication.run(SpringJpaApplication.class, args);
 		UserRepository repository = context.getBean(UserRepository.class);
 
-//		ADD USER TO DATABASE
-		UserDetails user1 = context.getBean(UserDetails.class);
-		user1.setUid(2);
-		user1.setFirstName("Aquatic");
-		user1.setLastName("Animal");
-		user1.setAddress("Ocean");
-		repository.save(user1);
-
-
-//		UPDATE USER IN DATABASE
-		UserDetails user2 = context.getBean(UserDetails.class);
-		user2.setUid(1);
-		user2.setFirstName("Terrestrial");
-		user2.setLastName("Organism");
-		user2.setAddress("land");
-		repository.save(user2);
-
-
-//		DROP USERS FROM DATABASE
-		repository.deleteAll();
-		repository.delete(user1);
-
 
 //		READ DATA FROM DATABASE
-		List<UserDetails> allRecords = repository.findAll();
-		Optional<UserDetails> oneRecord = repository.findById(1);
+		/*
+		Notice that we have declared method findByFirstName in UserRepository but not defined.
+		Since we have a property firstName, lastName, address in UserDetails entity, we can use
+		findByFirstName(), findByLastName(), findByAddress() method respectively to get data.
+		 */
+		Optional<UserDetails> foundByName = repository.findByFirstName("Jane");
+		System.out.println(foundByName.orElse(new UserDetails()));
 
-		System.out.println(allRecords);
-		System.out.println(oneRecord.orElse(new UserDetails()));
+		Optional<UserDetails> getAddress = repository.getAddressFindById(5);
+		System.out.println(getAddress);
 	}
 
 }
